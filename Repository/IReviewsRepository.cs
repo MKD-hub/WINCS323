@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,5 +13,8 @@ namespace WebProject.Repository
     {
         Task<List<ReviewModel>> GetAllReviewsAsync();
         Task<ReviewModel> GetReviewByIdAsync(int reviewId);
+
+
+        Task<int> AddReviewAsync(ReviewModel reviewModel);
     }
 }
