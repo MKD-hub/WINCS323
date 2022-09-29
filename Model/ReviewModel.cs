@@ -29,14 +29,16 @@ namespace WebProject.Model
         [Required]
         public string ReviewBody { get; set; }
 
-        [Required]
+        
         public DateTime ReviewDate { get; set; }
 
         public string ReviewImage { get; set; }
 
         [Required]
         [NotMapped]
-
         public IFormFile BookCover { get; set; }
+
+        [NotMapped]
+        public string ImageSrc { get; set; }
     }
 }
