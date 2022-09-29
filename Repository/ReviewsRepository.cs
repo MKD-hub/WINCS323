@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 
+
 namespace WebProject.Repository
 {
     public class ReviewsRepository : IReviewsRepository
@@ -37,11 +38,11 @@ namespace WebProject.Repository
             var reviewsList = _mapper.Map<List<ReviewModel>>(reviews);
 
             var address = _server.Features.Get<IServerAddressesFeature>().Addresses;
-            var t = address.ToList<String>();
+            var imageUrl = address.ToList<String>();
 
             foreach (ReviewModel rev in reviewsList)
             {
-                rev.ImageSrc = String.Concat(t[0], "Images/", rev.ReviewImage); //modified to get images for list of all reviews
+                rev.ImageSrc = String.Concat(imageUrl[0], "Images/", rev.ReviewImage); //modified to get images for list of all reviews
             }
 
             return reviewsList; 
@@ -97,7 +98,30 @@ namespace WebProject.Repository
 
             return review.Id;
         }
-       
+
+
+        public async Task EditReviewAsync(int reviewId, ReviewModel reviewModel)
+        {
+            var review = await _context.Reviews.FindAsync(reviewId);
+            if (review != null)
+            {
+                review.ReviewBody = reviewModel.ReviewBody;  //Users can only update these two fields. They shouldn't be allowed to update everything.
+                review.ReviewTitle = reviewModel.ReviewTitle;
+
+                _context.Reviews.Update(review);
+                await _context.SaveChangesAsync();
+            }
+            
+        }
+
+        public async Task DeleteReviewAsync(int reviewId)
+        {
+            var review = new Reviews() { Id = reviewId }; // Didn't "Hit" the DB just created an object here.
+
+            _context.Reviews.Remove(review);
+
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<string> SaveImage(IFormFile imageFile)
         {
