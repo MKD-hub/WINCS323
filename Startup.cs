@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebProject.Data;
@@ -41,9 +43,16 @@ namespace WebProject
                 AddEntityFrameworkStores<BookReviewContext>().
                 AddDefaultTokenProviders();
 
-            services.AddControllers();
+            services.AddControllers(); 
             services.AddTransient<IReviewsRepository, ReviewsRepository>();
             services.AddAutoMapper(typeof(Startup));
+            services.AddCors(option => 
+            {
+                option.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
            
         }
 
@@ -55,9 +64,17 @@ namespace WebProject
                 app.UseDeveloperExceptionPage();
             }
 
+           
+            app.UseStaticFiles(new StaticFileOptions
+            {  
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Images")),
+                RequestPath = "/Images"
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors(); // must be used here since ASP goes through the middlewares in the order they're presented
 
             app.UseAuthorization();
 
