@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -33,7 +34,7 @@ namespace WebProject.Controllers
             return Ok(reviews);
         }
 
-        [HttpGet("getId/{id}")]
+        [HttpGet("get-id/{reviewId}")]
         public async Task<IActionResult> GetReviewById([FromRoute] int reviewId)
         {
             var review = await _reviewRepository.GetReviewByIdAsync(reviewId);
@@ -46,10 +47,25 @@ namespace WebProject.Controllers
 
             var revId = await _reviewRepository.AddReviewAsync(reviewModel);
 
-            return CreatedAtAction(nameof(GetReviewById), new { id = revId, controller = "reviews" }, revId);
+            return CreatedAtAction(nameof(GetReviewById), new { reviewId = revId, controller = "reviews" }, revId);
             
         }
 
+        [HttpPut("edit-review/{reviewId}")]
+
+        public async Task<IActionResult> EditReview([FromRoute] int reviewId, [FromForm] ReviewModel reviewModel)
+        {
+            await _reviewRepository.EditReviewAsync(reviewId, reviewModel);
+            return Ok();
+        }
+
+        [HttpDelete("remove-review/{reviewId}")]
+
+        public async Task<IActionResult> DeleteReview([FromRoute] int reviewId)
+        {
+            await _reviewRepository.DeleteReviewAsync(reviewId);
+            return Ok();
+        }
         
        
     }
