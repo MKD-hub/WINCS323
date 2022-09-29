@@ -16,5 +16,9 @@ namespace WebProject.Repository
 
 
         Task<int> AddReviewAsync(ReviewModel reviewModel);
+        
+        Task EditReviewAsync(int reviewId, ReviewModel reviewModel);
+
+        Task DeleteReviewAsync(int reviewId);
     }
 }
