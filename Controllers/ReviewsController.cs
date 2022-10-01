@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +42,9 @@ namespace WebProject.Controllers
             return Ok(review);
         }
 
+        
         [HttpPost("add-review")]
+        [Authorize]
         public async Task<IActionResult> AddReview([FromForm] ReviewModel reviewModel)
         {
 
@@ -51,8 +54,9 @@ namespace WebProject.Controllers
             
         }
 
+        
         [HttpPut("edit-review/{reviewId}")]
-
+        [Authorize]
         public async Task<IActionResult> EditReview([FromRoute] int reviewId, [FromForm] ReviewModel reviewModel)
         {
             await _reviewRepository.EditReviewAsync(reviewId, reviewModel);
@@ -60,7 +64,7 @@ namespace WebProject.Controllers
         }
 
         [HttpDelete("remove-review/{reviewId}")]
-
+        [Authorize]
         public async Task<IActionResult> DeleteReview([FromRoute] int reviewId)
         {
             await _reviewRepository.DeleteReviewAsync(reviewId);
