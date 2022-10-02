@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Review</title>
+        <link rel="stylesheet" href="../CSS/site.css">
+        <script defer src="../JS/script.js"></script>
+    </head>
+
+    <body onload="LoadReview()">
+
+        <nav class="main-nav">
+            <ul>
+                <li>
+                    <a href="Index.html">Home</a>
+                </li>
+
+                <li>
+                    <div class="account-options">
+                        <a href="SignUpForm.html">Sign up</a>
+                        <a href="Login.html">Login</a>
+                    </div>
+                </li>
+
+            </ul>
+        </nav>
+
+        <div class="main-review-form-container">
+
+            <div class="image-submitter-container">
+
+                <img src="../Assets/Upload.svg" alt="cover.jpg" id="book-cover">
+
+                
+            </div>
+
+            <div class="review-inputs">
+                <label for="BookTitle">Book Title</label>
+                <div id="book-title">BOOK</div>
+
+                <label for="ReviewTitle">Review Title</label>
+                <div id="review-title">About Book</div>
+
+                <label for="ReviewBody">Review Body</label>
+                <div id="review-body"></div>
+            </div>
+
+            <div class="review-submission">
+                
+                <!-- <div class="review-submission-btn"> -->
+                    <button class="btn-submit" type="submit">Go back</button>
+                <!-- </div> -->
+            </div>   
+
+        </div>
+    </body>
+</html>
