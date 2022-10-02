@@ -51,7 +51,13 @@ namespace WebProject.Repository
         public async Task<ReviewModel> GetReviewByIdAsync(int reviewId)
         {
             var review = await _context.Reviews.FindAsync(reviewId);
-            return _mapper.Map<ReviewModel>(review);
+            var address = _server.Features.Get<IServerAddressesFeature>().Addresses;
+            var imageUrl = address.ToList<String>();
+
+            
+            var rev = _mapper.Map<ReviewModel>(review);
+            rev.ImageSrc = String.Concat(imageUrl[0], "Images/", rev.ReviewImage);
+            return rev;
         }
 
 
