@@ -8,15 +8,18 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using WebProject.Model;
 
 namespace WebProject.Repository
 {
+   
     public class AccountRepository : IAccountRepository
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
+       
         public AccountRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
         {
             _userManager = userManager;
@@ -37,7 +40,7 @@ namespace WebProject.Repository
             return await _userManager.CreateAsync(user, signUpModel.Password);
         }
 
-        public async Task<string> LoginAsync(SignInModel signInModel)
+        public async Task<List<string>> LoginAsync(SignInModel signInModel)
         {
             var result = await _signInManager.PasswordSignInAsync(signInModel.UserName, signInModel.Password, false, false);
 
@@ -64,7 +67,24 @@ namespace WebProject.Repository
 
                 );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return new List<string>
+            { new JwtSecurityTokenHandler().WriteToken(token), 
+                signInModel.UserName };
+        }
+
+        public async Task<string> GetUserId(string UserName)
+        {
+            var res = await _userManager.FindByNameAsync(UserName);
+
+
+            return res.Id;
+        }
+
+        public async Task<ApplicationUser> GetUser(string userName)
+        {
+            var res = await _userManager.FindByNameAsync(userName);
+
+            return res;
         }
     }
 }

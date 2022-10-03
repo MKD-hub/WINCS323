@@ -11,7 +11,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
-
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebProject.Repository
 {
@@ -37,7 +37,7 @@ namespace WebProject.Repository
             var reviews = await _context.Reviews.ToListAsync();
             var reviewsList = _mapper.Map<List<ReviewModel>>(reviews);
 
-            var address = _server.Features.Get<IServerAddressesFeature>().Addresses;
+            var address = _server.Features.Get<IServerAddressesFeature>().Addresses; //https://localhost:44389/Images/img-name
             var imageUrl = address.ToList<String>();
 
             foreach (ReviewModel rev in reviewsList)
@@ -68,37 +68,7 @@ namespace WebProject.Repository
 
             review.ReviewDate = DateTime.Now;
             review.ReviewImage = await SaveImage(reviewModel.BookCover);
-            /*var review = new Reviews()
-            {
-                UserId = "hhh",
-
-                ReviewBookName = reviewModel.ReviewBookName,
-
-                ReviewTitle = reviewModel.ReviewTitle,
-
-                ReviewBody = reviewModel.ReviewBody,
-
-                ReviewDate = DateTime.Now,
-
-                ReviewImage = await SaveImage(reviewModel.BookCover)
-
-
-
-                *//* public int CommentId { get; set; }
-
-                 public string ReviewBookName { get; set; }
-
-                 public string ReviewTitle { get; set; }
-
-                 public string ReviewBody { get; set; }
-
-                 public DateTime ReviewDate { get; set; }
-
-                 public string ReviewImage { get; set; }*//*
-
-            };
-*/
-
+            
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
 
@@ -111,8 +81,11 @@ namespace WebProject.Repository
             var review = await _context.Reviews.FindAsync(reviewId);
             if (review != null)
             {
-                review.ReviewBody = reviewModel.ReviewBody;  //Users can only update these two fields. They shouldn't be allowed to update everything.
+                review.ReviewBody = reviewModel.ReviewBody;  
                 review.ReviewTitle = reviewModel.ReviewTitle;
+                review.ReviewImage = await SaveImage(reviewModel.BookCover);
+                review.ReviewBookName = reviewModel.ReviewBookName;
+                review.ReviewDate = DateTime.Now;
 
                 _context.Reviews.Update(review);
                 await _context.SaveChangesAsync();
@@ -140,6 +113,33 @@ namespace WebProject.Repository
             }
 
             return imageName;
+        }
+
+        public async Task<List<ReviewModel>> GetUserReviews(string userId)
+        {
+            var userReviews = await _context.Reviews.Where(x => x.UserId == userId).Select(x => new Reviews()
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                ReviewTitle = x.ReviewTitle,
+                ReviewBookName = x.ReviewBookName,
+                ReviewBody = x.ReviewBody,
+                ReviewDate = x.ReviewDate,
+                ReviewImage = x.ReviewImage
+            }).ToListAsync();
+
+            var reviewsList = _mapper.Map<List<ReviewModel>>(userReviews);
+
+            var address = _server.Features.Get<IServerAddressesFeature>().Addresses;
+            var imageUrl = address.ToList<String>();
+
+            foreach (ReviewModel rev in reviewsList)
+            {
+                rev.ImageSrc = String.Concat(imageUrl[0], "Images/", rev.ReviewImage); //modified to get images for list of all reviews
+            }
+
+            return reviewsList;
+
         }
     }
 }
