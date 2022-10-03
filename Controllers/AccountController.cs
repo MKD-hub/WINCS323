@@ -39,12 +39,25 @@ namespace WebProject.Controllers
         {
             var result = await _accountRepository.LoginAsync(signInModel);
 
-            if (String.IsNullOrEmpty(result))
+            if (result == null)
             {
                 return Unauthorized();
             }
 
             return Ok(result);
+        }
+
+        [HttpGet("get-user")]
+
+        public async Task<IActionResult> GetUser([FromQuery] string username )
+        {
+            var res = await _accountRepository.GetUser(username);
+            if(res == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(res);
         }
     }
 }

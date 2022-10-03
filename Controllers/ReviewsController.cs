@@ -21,10 +21,12 @@ namespace WebProject.Controllers
     {
         /*Here is where all the API's will go*/
         private readonly IReviewsRepository _reviewRepository;
-        
-        public ReviewsController(IReviewsRepository reviewsRepository)
+        private readonly IAccountRepository _accountRepository;
+
+        public ReviewsController(IReviewsRepository reviewsRepository, IAccountRepository accountRepository)
         {
             _reviewRepository = reviewsRepository;
+            _accountRepository = accountRepository;
            
         }
 
@@ -42,12 +44,21 @@ namespace WebProject.Controllers
             return Ok(review);
         }
 
+        [HttpGet("get-user-reviews")]
+        [Authorize]
+        public async Task<IActionResult> GetReviewsByUser([FromQuery] string userName)
+        {
+            var userId = await _accountRepository.GetUserId(userName);
+            var userReviews = await _reviewRepository.GetUserReviews(userId);
+
+            return Ok(userReviews);
+        }
         
         [HttpPost("add-review")]
         [Authorize]
-        public async Task<IActionResult> AddReview([FromForm] ReviewModel reviewModel)
+        public async Task<IActionResult> AddReview([FromForm] ReviewModel reviewModel, [FromQuery] string UserName)
         {
-
+            reviewModel.UserId = await _accountRepository.GetUserId(UserName);
             var revId = await _reviewRepository.AddReviewAsync(reviewModel);
 
             return CreatedAtAction(nameof(GetReviewById), new { reviewId = revId, controller = "reviews" }, revId);
