@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Create Review</title>
-        <link rel="stylesheet" href="../CSS/site.css">
+        <title>Update review</title>
+        <link rel="stylesheet" href="../CSS/site.css"></rel>
         <script defer src="../JS/script.js"></script>
-        <meta charset="utf-8">
     </head>
 
-    <body onload="CheckLoggedIn()">
+    <body onload="GetReviewInfo()">
 
-        <!-- nav -->
         <nav class="main-nav">
             <ul>
                 <li>
@@ -17,17 +15,18 @@
                 </li>
 
                 <li>
-                    <div class="account-options">
-                        <a href="#" id="name-display"><i>FirstName LastName</i></a>
+                    <div class="account-options" id="account-options">
+                        <a href="SignUpForm.html" id="signup">Sign up</a>
+                        <a href="Login.html" id="login">Login</a>
+                        <a href="UserPage.html" id="name-display"><i>FirstName LastName</i></a>
+                        <a href="#" id="logout" onclick="LogoutRefresh()">Logout</a>
                     </div>
                 </li>
 
             </ul>
         </nav>
-
-        <!-- nav -->
-
-        <form action="" class="main-review-form" id="review-form">
+        
+        <form action="" class="main-review-form" id="update-form">
 
             <div class="main-review-form-container">
 
@@ -43,19 +42,19 @@
 
                 <div class="review-inputs">
                     <label for="BookTitle">Book Title</label>
-                    <input type="text" name="ReviewBookName" placeholder="Enter book title">
+                    <input type="text" name="ReviewBookName" placeholder="Enter book title" id="book-title">
 
                     <label for="ReviewTitle">Review Title</label>
-                     <input type="text" name="ReviewTitle" placeholder="Enter review title">
+                     <input type="text" name="ReviewTitle" placeholder="Enter review title" id="review-title">
 
                     <label for="ReviewBody">Your review</label>
-                    <textarea type="text" name="ReviewBody" placeholder="Your review goes here"></textarea>
+                    <textarea type="text" name="ReviewBody" placeholder="Your review goes here" id="review-body"></textarea>
                 </div>
 
                 <div class="review-submission">
                     
                     <!-- <div class="review-submission-btn"> -->
-                        <button class="btn-submit" type="submit" onclick="UploadReview()">Done</button>
+                        <button class="btn-submit" type="submit" onclick="UpdateReview()">Done</button>
                     <!-- </div> -->
                 </div>   
 
@@ -63,9 +62,5 @@
 
         </form>
 
-
     </body>
 </html>
-
-
-

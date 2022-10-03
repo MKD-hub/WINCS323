@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Sign Up Form</title>
+        <title>Login - Book Review</title>
         <link rel="stylesheet" href="../CSS/site.css">
         <script defer src="../JS/script.js"></script>
     </head>
 
     <body>
-
+        
         <nav class="main-nav">
             <ul>
                 <li>
@@ -24,30 +24,19 @@
             </ul>
         </nav>
 
-        <form class="signup-main-form" id="signup-form">
+        <form  class="signup-main-form" id="login-form">
             <div class="main-form-container">
                 
                 <div class="signup-inputs">
-                    <h2>Sign Up</h2>
+                    <h2>Login</h2>
                     <hr>
 
-                    <label for="FirstName">First Name</label>
-                    <input type="text" name="FirstName" placeholder="Enter your first name">
-
-                    <label for="LasttName">Last Name</label>
-                    <input type="text" name="LastName" placeholder="Enter your last name">
-
+                    
                     <label for="UserName">User Name</label>
-                    <input type="text" name="UserName" placeholder="Enter your user name">
-
-                    <label for="Email">Email</label>
-                    <input type="email" name="Email" placeholder="Enter your email">
+                    <input required type="text" name="UserName" placeholder="Enter your user name">
 
                     <label for="Password">Password</label>
-                    <input type="password" name="Password" placeholder="Enter your password">
-
-                    <label for="Password1">Confirm Password</label>
-                    <input type="password" name="ConfirmPassword" placeholder="Confirm your password">
+                    <input required type="password" name="Password" placeholder="Enter your password">
 
                 </div>
 
@@ -59,7 +48,7 @@
 
                         <img src="../Assets/Signup.svg">
                         <div class="signup-conf-button-container">
-                            <button type="submit" class="signup-submit" onclick="SignUp()">Sign up</button>
+                            <button type="submit" class="signup-submit" onclick="login()">login</button>
                         </div>
                     </div>
 
@@ -69,7 +58,7 @@
             </div>
         </form>
 
+
+
     </body>
-
-
 </html>
